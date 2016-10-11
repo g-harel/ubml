@@ -1,7 +1,7 @@
 <ubml>
 
     <en>
-        <a href="heyooo">
+        <a href="testing">
             <box bgcolor="0" padding="0">
                 <border bordercolor="00" margin="00">
                     <box bgcolor="000" padding="000">
@@ -18,7 +18,7 @@
     </en>
     
     <fr>
-        <a href="heyooo">
+        <a href="testing">
             <box bgcolor="0" padding="0">
                 <border bordercolor="00" margin="00">
                     <box bgcolor="000" padding="000">

@@ -45,7 +45,7 @@ try {
     process.exit();
 }
 
-// parseing the template
+// parsing the template
 template = new XmlDocument(template);
 
 // check that document is properly formatted (only one root node)
@@ -98,9 +98,6 @@ function read(doc) {
                 return index?(compiled_children[index]||'<!---->'):compiled_children.join('');
             })
         );
-        if (parent.children) {
-            var children = read(parent.children);
-        }
     });
     return compiled;
 }
