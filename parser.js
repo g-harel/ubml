@@ -77,7 +77,7 @@ template.children.forEach(parent => {
     fs.writeFileSync(`build/index_${name}.html`, compiled);
 });
 
-// take array of XmlDocuments and return it as compiled html
+// take array of XmlDocuments and return it as an array of compiled html code
 function read(doc) {
     var compiled = [];
     doc.forEach(parent => {
