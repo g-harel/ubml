@@ -1,7 +1,7 @@
 <ubml>
 
     <en>
-        <a href="testing">
+        <!--<a href="testing">
             <box bgcolor="0" padding="0">
                 <border bordercolor="00" margin="00">
                     <box bgcolor="000" padding="000">
@@ -14,11 +14,15 @@
                     </div>
                 </border>
             </box>
-        </a>
+        </a>-->
+        <_banner src="big" srcm="small"/>
+        <_text>
+            <_banner src="big" srcm="small"/>
+        </_text>
     </en>
     
     <fr>
-        <a href="testing">
+        <!--<a href="testing">
             <box bgcolor="0" padding="0">
                 <border bordercolor="00" margin="00">
                     <box bgcolor="000" padding="000">
@@ -31,7 +35,7 @@
                     </div>
                 </border>
             </box>
-        </a>
+        </a>-->
     </fr>
 
 </ubml>

@@ -3,6 +3,7 @@
     link
     title
     src
+    srcm
     
 -->
 
@@ -10,14 +11,14 @@
 <tr>
     <td class="hide" align="center">
         <a href="@@link{#}@" title="@@title{banner}@" target="_blank" style="text-decoration:none;">
-            <img src="@srcg@" style="vertical-align:top; color:#ffffff; width:600px;" width="600" />
+            <img src="@@src{#}@" style="vertical-align:top; color:#ffffff; width:600px;" width="600" />
         </a>
     </td>
 </tr>
 <tr>
     <td class="img-m" align="center" style="display: none; font-size: 0; line-height: 0;">
         <a href="@@link{#}@" title="@@title{banner}@" target="_blank" style="text-decoration:none;">
-            <img src="@@src@" style="vertical-align:top; color:#ffffff; display: none;" width="0" />
+            <img src="@@srcm{@@src{#}@}@" style="vertical-align:top; color:#ffffff; display: none;" width="0" />
         </a>
     </td>
 </tr>

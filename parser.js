@@ -54,7 +54,7 @@ if (template.name !== 'ubml') {
     process.exit();
 }
 
-// loop through all parent elements
+// loop through all parent elements and creates a file fo each
 template.children.forEach(parent => {
     var name = parent.name;
     var template_file = parent.attr.template || 'index';
@@ -65,6 +65,7 @@ template.children.forEach(parent => {
     var compiled = read(parent.children).join('');
     compiled = blocks['index']
         .replace('@@content@', compiled)
+        .replace(/\n\s+/g, '')
         .replace('@@title@', name);
     compiled = html_beautify(compiled);
     compiled = compiled.split('').map(function(val) {
@@ -90,14 +91,24 @@ function read(doc) {
             compiled.push(`<${tag} ${xml_attr}>${compiled_children.join('')}</${tag}>`);
             return;
         }
-        compiled.push(blocks[tag]
-            .replace(/@@(\w+){(.+)}@/g, (match, key, def) => {
-                return parent.attr[key] || def || ' ';
-            })
+        compiled.push(
+            replace_tags(blocks[tag])
+            .replace(/<!--[^]+?-->/g, '')
             .replace(/@@content(?:\[(\d)\])?@/g, (match, index) => {
                 return index?(compiled_children[index]||'<!---->'):compiled_children.join('');
             })
         );
+        function replace_tags(tag) {
+            return tag.replace(/@@(\w+){([^\n"=:;\s]+)}@/g, (match, key, def) => {
+                if (parent.attr[key]) {
+                    return parent.attr[key];
+                } else if (def) {
+                    return replace_tags(def);
+                } else {
+                    return '<!---->';
+                }
+            });
+        }
     });
     return compiled;
 }
