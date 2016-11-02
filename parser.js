@@ -23,8 +23,8 @@ require.extensions['.ubml'] = function(module, filename) {
 var blocks = {};
 try {
     fs.readdirSync('blocks/').forEach(function(name) {
-        if (name.match(/\.html$/g)) {
-            blocks[name.slice(0,-5)] = require('./blocks/'+ name);
+        if (name.match(/^_.+\.html$/g)) {
+            blocks[name.slice(1,-5)] = require('./blocks/'+ name);
         }
     });
 } catch (e) {
@@ -66,7 +66,8 @@ template.children.forEach(parent => {
     compiled = blocks['index']
         .replace('@@content@', compiled)
         .replace(/\n\s+/g, '')
-        .replace('@@title@', name);
+        .replace(/@@title@/g, name)
+        .replace(/@@bgcolor@/g, (parent.attr.bgcolor || '#ffffff'));
     compiled = html_beautify(compiled);
     compiled = compiled.split('').map(function(val) {
         var cc = val.charCodeAt(0);
@@ -88,14 +89,14 @@ function read(doc) {
         }).slice(1,-1);
         var compiled_children = read(parent.children);
         if (!blocks[tag]) {
-            compiled.push(`<${tag} ${xml_attr}>${compiled_children.join('')}</${tag}>`);
+            compiled.push(`<${tag} ${xml_attr}>${compiled_children.join('')}${parent.val||''}</${tag}>`);
             return;
         }
         compiled.push(
             replace_tags(blocks[tag])
             .replace(/<!--[^]+?-->/g, '')
             .replace(/@@content(?:\[(\d)\])?@/g, (match, index) => {
-                return index?(compiled_children[index]||'<!---->'):compiled_children.join('');
+                return parent.val.trim() || (index?(compiled_children[index]||'<!---->'):compiled_children.join(''));
             })
         );
         function replace_tags(tag) {
@@ -105,7 +106,7 @@ function read(doc) {
                 } else if (def) {
                     return replace_tags(def);
                 } else {
-                    return '<!---->';
+                    return ' ';
                 }
             });
         }

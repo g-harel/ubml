@@ -1,41 +1,17 @@
 <ubml>
 
     <en>
-        <!--<a href="testing">
-            <box bgcolor="0" padding="0">
-                <border bordercolor="00" margin="00">
-                    <box bgcolor="000" padding="000">
-                        <img src="0000" />
-                    </box>
-                    <div>
-                        <box bgcolor="000" padding="000">
-                            <img src="0000" />
-                        </box>
-                    </div>
-                </border>
-            </box>
-        </a>-->
-        <_banner src="big" srcm="small"/>
-        <_text>
-            <_banner src="big" srcm="small"/>
-        </_text>
+        <banner src="http://static2.ubi.com/crm-ncsa/email/2016/PI-WD2-NCSA-E-BC-160929-CT-DedSec-10/img/img_01.jpg" />
+        <border bgcolor="#888888">
+            <double lalign="top">
+                <text>This should be on the left</text>
+                <text>Whereas this should be on the right</text>
+            </double>
+        </border>
+        <padding>
+            <listitem bullet="&bull;" bulletsize="19" text="this is my <b>bullet</b>" />
+            <listitem bullet="&bull;" bulletsize="19" text="this is my <b>bullet</b>" />
+        </padding>
     </en>
-    
-    <fr>
-        <!--<a href="testing">
-            <box bgcolor="0" padding="0">
-                <border bordercolor="00" margin="00">
-                    <box bgcolor="000" padding="000">
-                        <img src="0000" />
-                    </box>
-                    <div>
-                        <box bgcolor="000" padding="000">
-                            <img src="0000" />
-                        </box>
-                    </div>
-                </border>
-            </box>
-        </a>-->
-    </fr>
 
 </ubml>

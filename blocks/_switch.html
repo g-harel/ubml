@@ -1,0 +1,40 @@
+<!--
+
+    content
+
+-->
+
+<%
+switch (INDIVIDUAL.COUNTRY_CODE.toString()) {
+    case "US":
+        %>@@content[0]@<%
+        break;
+    case "CA":
+        %>@@content[1]@ @@content[2]@<%
+        break;
+    case "BR":
+        %>@@content[3]@<%
+        break;
+    case "AR":
+    case "BO":
+    case "CL":
+    case "CR":
+    case "CO":
+    case "DO":
+    case "EC":
+    case "GT":
+    case "HN":
+    case "MX":
+    case "NI":
+    case "PA":
+    case "PE":
+    case "PY":
+    case "SV":
+    case "UY":
+    case "VE":
+        %>@@content[4]@<%
+        break;
+    default:
+        %>@@content[0]@<%
+        break;
+} %>
