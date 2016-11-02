@@ -54,21 +54,24 @@ if (template.name !== 'ubml') {
     process.exit();
 }
 
-// loop through all parent elements and creates a file fo each
+// loop through all parent elements and creates a file for each
 template.children.forEach(parent => {
     var name = parent.name;
+    // optionally specify the template file
     var template_file = parent.attr.template || 'index';
     if (!blocks[template_file]) {
         console.log(`ERROR: missing "./build/${template_file}.html", ${name} skipped`);
         process.exit();
     }
+    // link up the compiled children, put them into the template and replacing a few tags
     var compiled = read(parent.children).join('');
     compiled = blocks['index']
-        .replace('@@content@', compiled)
         .replace(/\n\s+/g, '')
         .replace(/@@title@/g, name)
-        .replace(/@@bgcolor@/g, (parent.attr.bgcolor || '#ffffff'));
+        .replace(/@@bgcolor@/g, (parent.attr.bgcolor || '#ffffff'))
+        .replace('@@content@', compiled);
     compiled = html_beautify(compiled);
+    // replacing "dangerous" characters with an html token equivalent
     compiled = compiled.split('').map(function(val) {
         var cc = val.charCodeAt(0);
         if (cc > 127) {
@@ -76,30 +79,39 @@ template.children.forEach(parent => {
         }
         return val;
     }).join('');
+    // create the file
     fs.writeFileSync(`build/index_${name}.html`, compiled);
 });
 
-// take array of XmlDocuments and return it as an array of compiled html code
+// takes array of XmlDocuments and return it as an array of compiled html code
 function read(doc) {
     var compiled = [];
+    // looping through the XmlDocument array
     doc.forEach(parent => {
         var tag = parent.name;
-        var xml_attr = JSON.stringify(parent.attr).replace(/"(\w+)":"([\w#]+)",?/g, (match, key, value) => {
-            return key + '="' + value + '" '
-        }).slice(1,-1);
         var compiled_children = read(parent.children);
+        // if the tag is not found as a block, leave it there
         if (!blocks[tag]) {
+            // reformatting the object of attributes into xml
+            var xml_attr = JSON.stringify(parent.attr).replace(/"(\w+)":"([\w#]+)",?/g, (match, key, value) => {
+                return key + '="' + value + '" '
+            }).slice(1,-1);
+            // adding the compiled tag to the return array
             compiled.push(`<${tag} ${xml_attr}>${compiled_children.join('')}${parent.val||''}</${tag}>`);
             return;
         }
+        // compilign and adding the tag to the return array
         compiled.push(
             replace_tags(blocks[tag])
+            // removing comments
             .replace(/<!--[^]+?-->/g, '')
+            // replacing content tags with the child of the same index or with all of the compiled children
             .replace(/@@content(?:\[(\d)\])?@/g, (match, index) => {
                 return parent.val.trim() || (index?(compiled_children[index]||'<!---->'):compiled_children.join(''));
             })
         );
         function replace_tags(tag) {
+            // replace tags with the parent attribute of the same name (if it exists), or with the default value, or with a fallback
             return tag.replace(/@@(\w+){([^\n"=:;\s]+)}@/g, (match, key, def) => {
                 if (parent.attr[key]) {
                     return parent.attr[key];
